@@ -1,6 +1,4 @@
-import os
 import data_fetcher
-from dotenv import load_dotenv
 
 
 def get_user_input():
