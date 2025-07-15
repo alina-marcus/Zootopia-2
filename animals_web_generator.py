@@ -2,14 +2,17 @@ import os
 import requests
 from dotenv import load_dotenv
 
+def get_user_input():
+    name = input("What is your animal's name? ")
+    return name
 
-def load_data_from_api():
+def load_data_from_api(name):
     """
     Loads and returns JSON data from an api endpoint.
+    :param name:
     :param file_path: Path to the JSON file (not used anymore).
     :return: Parsed JSON data.
     """
-    name = 'cheetah'
     api_url = f'https://api.api-ninjas.com/v1/animals?name={name}'
     response = requests.get(api_url, headers={'X-Api-Key': 'RcTj7nZso0kat5oeGilX8A==PdBWgVexlPBwB1Gt'})
 
@@ -85,10 +88,12 @@ def inject_html(template_path, output_html, output_path, placeholder="__REPLACE_
 
     with open(output_path, "w", encoding="utf-8") as file:
         file.write(data)
+    print("Website was successfully generated to the file animals.html.")
 
 
 def main():
-    animals_data = load_data_from_api()
+    name = get_user_input()
+    animals_data = load_data_from_api(name)
     output_html = generate_html(animals_data)
     inject_html(
         template_path="animals_template.html",
