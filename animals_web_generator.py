@@ -31,15 +31,12 @@ def serialize_animal(animal):
     :param animal: Dictionary containing animal data.
     :return: HTML string for the animal.
     """
-    # changed everything from animal['key'] to animal.get('key', 'default placeholder')
-    # to make the program more stable & avoid KeyErrors
     name = animal.get("name", "Unknown")
     characteristics = animal.get("characteristics", {})
     diet = characteristics.get("diet", "Unknown")
     locations = animal.get("locations", [])
     # in case of empty locations this will set 'Unknown' as the location
     location = locations[0] if locations else "Unknown"
-    # changed this from string concatenation to a list that gets appended
     html_parts = [
         '<li class="cards__item">',
         f'<div class="card__title">{name}</div>',
@@ -62,7 +59,6 @@ def serialize_animal(animal):
 
 
 def generate_html(animals_data):
-    # this now only iterates over the animals list and calls serialize_animal function on each item
     """
     Iterates over list of animals and generates HTML string by calling serialize_animal()
 
@@ -73,7 +69,6 @@ def generate_html(animals_data):
 
 
 def inject_html(template_path, output_html, output_path, placeholder="__REPLACE_ANIMALS_INFO__"):
-    # now generates new file instead of overwriting the template
     """
     Replaces a placeholder in an HTML template and writes the result to a new file.
 
@@ -94,12 +89,18 @@ def inject_html(template_path, output_html, output_path, placeholder="__REPLACE_
 def main():
     name = get_user_input()
     animals_data = load_data_from_api(name)
+
+    if not animals_data:
+        print(f"Sorry, no animal found with the name '{name}'. Please try again with a different name.")
+        return  # stop the program
+
     output_html = generate_html(animals_data)
     inject_html(
         template_path="animals_template.html",
         output_html=output_html,
-        output_path="animals.html"  #included new file here
+        output_path="animals.html"
     )
+
 
 
 
