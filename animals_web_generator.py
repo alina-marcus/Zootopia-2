@@ -1,27 +1,11 @@
 import os
-import requests
+import data_fetcher
 from dotenv import load_dotenv
+
 
 def get_user_input():
     name = input("What is your animal's name? ")
     return name
-
-def load_data_from_api(name):
-    """
-    Loads and returns JSON data from an api endpoint.
-    :param name:
-    :param file_path: Path to the JSON file (not used anymore).
-    :return: Parsed JSON data.
-    """
-    api_url = f'https://api.api-ninjas.com/v1/animals?name={name}'
-    response = requests.get(api_url, headers={'X-Api-Key': 'RcTj7nZso0kat5oeGilX8A==PdBWgVexlPBwB1Gt'})
-
-    if response.status_code == requests.codes.ok:
-        animals_data = response.json()
-        return animals_data
-    else:
-        print("Error!", response.status_code, response.text)
-        return []
 
 
 def serialize_animal(animal):
@@ -88,7 +72,7 @@ def inject_html(template_path, output_html, output_path, placeholder="__REPLACE_
 
 def main():
     name = get_user_input()
-    animals_data = load_data_from_api(name)
+    animals_data = data_fetcher.fetch_data(name)
 
     if not animals_data:
         print(f"Sorry, no animal found with the name '{name}'. Please try again with a different name.")
